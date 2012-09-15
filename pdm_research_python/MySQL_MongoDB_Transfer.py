@@ -16,7 +16,7 @@ if __name__ == '__main__':
 # export joboffer3 to .csv (UTF-8) with a header line
 # import into MongoDB using the below script from the cmd shell, not Mongo (superfast), INSTEAD of dealing with Python !!!
 # mongoimport -d jobs -c joboffer3 -type csv --headerline --drop D:/MongoDB/Data/joboffer3.csv
- 
+
 
 # setup MongoDB connection
 import pymongo
