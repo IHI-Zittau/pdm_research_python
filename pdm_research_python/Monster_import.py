@@ -12,7 +12,7 @@ if __name__ == '__main__':
 ## Import packages
 # import NLTK
 from __future__ import division
-import nltk, re, pprint
+import nltk
 
 # import Beautiful Soup library
 from bs4 import BeautifulSoup
@@ -22,7 +22,8 @@ from bs4 import BeautifulSoup
 
 ''' Set Directory '''
 ''' Monster '''
-directory = "C:/Program Files/screen-scraper basic edition/_Product_Manager/Monster/Monster-US/Accounting-Auditing-Services"
+directory = "C:/Program Files/screen-scraper basic edition/_Product_Manager/Monster/Monster-US"
+# directory = "C:/Program Files/screen-scraper basic edition/_Product_Manager/Monster/Monster-US/Accounting-Auditing-Services"
 # directory = "C:/Programme/screen-scraper basic edition/_Product_Manager/Monster/Monster-US/_Advertising-PR-Services"
 ''' directory = "C:/Programme/screen-scraper basic edition/_Product_Manager/Monster/Monster-US/_Banking" '''
 ''' directory = "C:/Programme/screen-scraper basic edition/_Product_Manager/Monster/Monster-US/_Biotechnology-Pharmaceuticals" '''
@@ -48,15 +49,28 @@ directory = "C:/Program Files/screen-scraper basic edition/_Product_Manager/Mons
 # import textreader from NLTK
 from nltk.corpus import PlaintextCorpusReader
 files = PlaintextCorpusReader (directory, '.*')
-files.fileids()[1:20]
-''' files.words()[1:50] '''
-''' files.sents()[5:10] '''
+files.fileids()[1:20] # works
+# files.words()[1:50] - doesn't work
+# files.sents()[5:10] - doesn't work
 
-''' Raw Text '''
+# Raw Text 
 html_doc = files.raw()
 print html_doc
 
 soup = BeautifulSoup(html_doc)
 print soup
 
-soup.text
+''' How come only the first file content is shown? '''
+soup.text               # right her
+soup.title
+soup.a
+soup.find_all('a')
+soup.find_all('text')
+print(soup.get_text())  # now it shows more (the whole?)
+
+# Sentences - Cleaned from HTML
+sentences = nltk.sent_tokenize(soup.get_text)
+
+for element in sentences:
+    print element           # not very good with this type of data - needs finetuning
+    
