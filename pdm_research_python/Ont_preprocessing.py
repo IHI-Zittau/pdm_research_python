@@ -36,11 +36,10 @@ con = mdb.connect('localhost', 'Python','Python', 'harlandsql7');
 # test database access
 with con:
     cur = con.cursor()
-    cur.execute("SELECT * FROM saetze3_aussortiert2")
+    cur.execute("SELECT * FROM saetze3_aussortiert2 LIMIT 100;")
     numrows = int(cur.rowcount)
     print('Testing Database Access')
-#    for i in range(numrows):
-    for i in range(0,100):
+    for i in range(numrows):
         row = cur.fetchone()
         print row[1]
 
@@ -71,7 +70,8 @@ with con:
 with con:
     cur = con.cursor()
 #    cur.execute("SELECT * FROM saetze2_aussortiert3 JOIN joboffer WHERE saetze2_aussortiert3.jobofferid = joboffer.jobofferid AND saetze2_aussortiert3.`r_and_d` = 0 AND joboffer.`anzahl_ausgewaehlter_saetze` > 6 AND joboffer.`anzahl_ausgewaehlter_saetze` < 15")
-    cur.execute("SELECT * FROM saetze3_aussortiert2 JOIN joboffer WHERE saetze3_aussortiert2.jobofferid = joboffer.jobofferid AND saetze3_aussortiert2.`jobtypeid` = 12 AND joboffer.`anzahl_ausgewaehlter_saetze` > 2")
+#    cur.execute("SELECT * FROM saetze3_aussortiert2 JOIN joboffer WHERE saetze3_aussortiert2.jobofferid = joboffer.jobofferid AND saetze3_aussortiert2.`jobtypeid` = 12 AND joboffer.`anzahl_ausgewaehlter_saetze` > 2")
+    cur.execute("SELECT * FROM saetze3_aussortiert2 JOIN joboffer WHERE saetze3_aussortiert2.jobofferid = joboffer.jobofferid AND saetze3_aussortiert2.`jobtypeid` = 12 AND joboffer.`anzahl_ausgewaehlter_saetze` > 2 LIMIT 100;")
     numrows = int(cur.rowcount)
 #    print cur.fetchone()
 #    row = cur.fetchone()
@@ -88,13 +88,12 @@ with con:
 #    from nltk.stem import WordNetLemmatizer
 #    lemmatizer = WordNetLemmatizer()
 #    sfile = open(stats,"w")
-#    for i in range(numrows):
-    for i in range(0,100):
+    for i in range(numrows):
 #        print i
         row_p = row             # previous row
         row = cur.fetchone()      
         tokens = nltk.word_tokenize(row[1])
-#        print tokens
+        print tokens
         ## pre-processing
         # remove punctuation & numbers
         tokens = [''.join(e for e in element if e.isalpha()) for element in tokens]
@@ -112,7 +111,9 @@ with con:
         tokens = [element for element in tokens if len(element)>1]
         # put sentences back together as job postings with CRLF at the end        
         # jobofferid = last one
-        if row[6] == last:
+        print row
+        print row[8], last
+        if row[8] == last:
 #            [file.write(element + " ") for element in tokens]            
             [job.append(element) for element in tokens]
             scount = scount + 1
@@ -120,18 +121,18 @@ with con:
 #            [file.write(element + " ") for element in tokens]  
             [job.append(element) for element in tokens]
             FIRST = False
-            last = row[6] 
+            last = row[8] 
             scount = scount + 1
         else:
-            last = row[6]    
+            last = row[8]    
 #            print job
             # append job to .txt file
             # kick out any jobs, which have unusually many sentences
             if scount < 41:
 #                print directory
 #                print row_p[7]
-                output = directory + jobtypes[str(row_p[5])] + "_" + run_date + ".txt"
-#                print output
+                output = directory + jobtypes[str(row_p[7])] + "_" + run_date + ".txt"
+                print output
                 jfile = open(output,'a')
                 print job
                 [jfile.write(element + " ") for element in job]
