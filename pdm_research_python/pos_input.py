@@ -5,7 +5,7 @@ Created on 09.12.2012
 '''
 
 ''' 
-Script to take sentences from a random sample of job postings and put them
+Script to take all sentences of a job type from the job postings and put them
 into text files named with the job_id.
 '''
 
@@ -15,8 +15,8 @@ if __name__ == '__main__':
     pass
 
 import MySQLdb as mdb
-import nltk
-import random
+#import nltk
+#import random
 from datetime import date
 
 # Date Stuff for File Output
@@ -28,11 +28,9 @@ import os
 directory = "D:/Eigene Dateien_rklein/z_Forschung/_Konferenzen/_79_ICFCA - Dresden - Concept Analysis/Data/Output/_Product_Management/"
 
 #os.listdir('.')
+if not os.path.exists(directory): os.mkdir(directory)
 os.chdir(directory)
 #os.listdir('.')
-#output = directory + "output_RnD_" + run_date + ".txt"
-#stats = directory + "stats_RnD_" + run_date + ".txt"
-#print output
 
 con = mdb.connect('localhost', 'Python','Python', 'harlandsql7');
 
@@ -49,27 +47,24 @@ with con:
 # Get sentences and write to respective files; assume the sentences are already clean
 with con:
     cur = con.cursor()
-    cur.execute("SELECT * FROM saetze3_aussortiert2 WHERE jobtypeid = 12 LIMIT 100;")
+#    cur.execute("SELECT * FROM saetze3_aussortiert2 WHERE jobtypeid = 12 LIMIT 100;")
+    cur.execute("SELECT * FROM saetze3_aussortiert2 JOIN joboffer4 WHERE saetze3_aussortiert2.jobofferid = joboffer4.jobofferid AND saetze3_aussortiert2.`jobtypeid` = 12 AND joboffer4.`anzahl_ausgewaehlter_saetze` > 2 LIMIT 2000;")
     numrows_saetze = int(cur.rowcount)
     print numrows_saetze
     for i in range(numrows_saetze):
         row = cur.fetchone()
-        print row
+#        print row
         jobid = row[8] 
         sentence = row[1]
+#        print jobid, sentence
         output = directory + str(jobid) + ".txt"
-        print output
-        jfile = open(output,'a')
-        jfile.write(str(sentence) + "\n")
-
-# Close all files
-file_list = os.listdir(directory)
-print file_list
-for i in range(len(file_list)):     
-    output = directory + file_list[i]
-#    print output
-    jfile = open(output)
-    jfile.close()  
+#        print output
+        print "."
+        jfile = open(output,"a")
+        try:
+            jfile.write(str(sentence) + "\n")
+        finally:
+            jfile.close()
 
 
 ### All Job Posting Files written and closed
