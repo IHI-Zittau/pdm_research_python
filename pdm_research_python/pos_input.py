@@ -25,7 +25,7 @@ run_date = d.isoformat()
 
 # Directory and File Stuff
 import os
-directory = "D:/Eigene Dateien_rklein/z_Forschung/_Konferenzen/_79_ICFCA - Dresden - Concept Analysis/Data/Output/_Product_Management/"
+directory = "D:/Eigene Dateien_rklein/z_Forschung/_Konferenzen/_79_ICFCA - Dresden - Concept Analysis/Data/Input/_Product_Management/"
 
 #os.listdir('.')
 if not os.path.exists(directory): os.mkdir(directory)
@@ -59,10 +59,10 @@ with con:
 #        print jobid, sentence
         output = directory + str(jobid) + ".txt"
 #        print output
-        print "."
+#        print "."
         jfile = open(output,"a")
         try:
-            jfile.write(str(sentence) + "\n")
+            jfile.write(str(sentence) + "." + "\n")
         finally:
             jfile.close()
 
