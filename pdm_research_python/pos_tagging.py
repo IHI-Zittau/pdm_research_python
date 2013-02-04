@@ -28,11 +28,10 @@ reader.raw()
 reader.sents()
 reader.words()
 
-# tokenizing
+## default POS tagger from NLTK ##
 import nltk
 # import pprint
 # sent_tokenizer=nltk.data.load('tokenizers/punkt/english.pickle')
-# default POS tagger from NLTK
 pos = "nltk"
 path = output_directory + pos
 if not os.path.exists(path): os.mkdir(path)
@@ -54,7 +53,16 @@ for i in range(len(file_list)):
         jfile.write("\n")
     jfile.close()
                             
-        
+## TreeTagger from Helmut Schmid using the Wrapper from Laurent Pointal ##
+from TreeTaggerWrapper import treetaggerwrapper
+#1) build a TreeTagger wrapper:
+tagger = treetaggerwrapper.TreeTagger(TAGLANG='en',TAGDIR='D:/Programme/TreeTagger')
+#2) tag your text.
+tags = tagger.TagText("This is a very short text to tag.")
+#3) use the tags list... (list of string output from TreeTagger).
+print tags
+
+   
 # Check, whether the format of the tagged postings is good for the tagged corpus reader
 # p.51 NLTK Cookbook
 input_directory = path
@@ -67,3 +75,13 @@ reader.sents()
 reader.tagged_sents()
 reader.paras()
 reader.tagged_paras()
+
+# testing the import #
+#import sys
+import myMath
+
+print myMath.add(4,5)
+print myMath.division(4, 2)
+print myMath.multiply(10, 5)
+print myMath.fibonacci(8)
+print myMath.squareroot(48)
