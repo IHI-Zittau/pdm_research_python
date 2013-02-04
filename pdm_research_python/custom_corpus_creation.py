@@ -12,17 +12,17 @@ see Python Text Processing with NLTK Cookbook '''
 
 # Strg + Alt + Enter for Execution
 
-import os, os.path
+import os.path
 path = os.path.expanduser('~/nltk_data')
 if not os.path.exists(path): os.mkdir(path)
 os.path.exists(path)
 import nltk.data
-path in nltk.data.path
+#path in nltk.data.path
 print path
 ''' note that this should be a path in the Git_Workspace on D:\ '''
 
 ''' load a sample wordlist '''
-import nltk.data
+#import nltk.data
 nltk.data.load('corpora/cookbook/GL_Sequent.txt', format='raw')
 'nltk\n'
 
@@ -77,16 +77,16 @@ reader.fileids(categories=['pos'])
 
 
 ''' using a categorized chunked corpus reader '''
-import nltk.data
+#import nltk.data
 from catchunked import CategorizedChunkedCorpusReader
 path = nltk.data.find('corpora/treebank/tagged')
 reader = CategorizedChunkedCorpusReader(path, r'wsj_.*\.pos',cat_pattern=r'wsj_(.*)\.pos')
-len(reader.categories()) == len(reader.fileids())
+#len(reader.categories()) == len(reader.fileids())
 len(reader.chunked_sents(categories=['0001']))
 
 ''' Lazy corpus loader '''
 from nltk.corpus.util import LazyCorpusLoader
-from nltk.corpus.reader import WordListCorpusReader
+#from nltk.corpus.reader import WordListCorpusReader
 reader = LazyCorpusLoader('cookbook', WordListCorpusReader,['wordlist'])
 isinstance(reader, LazyCorpusLoader)
 reader.fileids()
